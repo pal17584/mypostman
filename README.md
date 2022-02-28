@@ -32,10 +32,10 @@ The `newman run` command allows you to specify a collection to be run. Go to the
 $ newman run API_Collection/NAB_AUTO_API_TEST.json -e NAB_TEST_ENV.json
 ```
 #### Run via your Postman desktop:
-Step 1: Create a collection
-Step 2: Import the file: NAB_AUTO_API_TEST.json
-Step 3: Import the test environment file: NAB_TEST_ENV.json
-Step 4: Run the script.
+Step 1: Create a collection<br/>
+Step 2: Import the file: NAB_AUTO_API_TEST.json<br/>
+Step 3: Import the test environment file: NAB_TEST_ENV.json<br/>
+Step 4: Run the script.<br/>
   
 ### Reporters
 Use the installed reporter, either via the CLI, or programmatic usage.<br/>
