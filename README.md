@@ -25,17 +25,17 @@ $ npm install -g newman-reporter-htmlextra
 
 ### Run Test Scripts
 
-- Run on your location:
+#### Run on your location:
 The `newman run` command allows you to specify a collection to be run. Go to the forder: API_Collection and run following command using Newman:
 
 ```console
 $ newman run API_Collection/NAB_AUTO_API_TEST.json -e NAB_TEST_ENV.json
 ```
-- Run via your Postman desktop:
-  Step 1: Create a collection
-  Step 2: Import the file: NAB_AUTO_API_TEST.json
-  Step 3: Import the test environment file: NAB_TEST_ENV.json
-  Step 4: Run the script.
+#### Run via your Postman desktop:
+Step 1: Create a collection
+Step 2: Import the file: NAB_AUTO_API_TEST.json
+Step 3: Import the test environment file: NAB_TEST_ENV.json
+Step 4: Run the script.
   
 ### Reporters
 Use the installed reporter, either via the CLI, or programmatic usage.<br/>
