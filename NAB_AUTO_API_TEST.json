@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "7ad2c118-132b-4cf7-9b1c-9a4d9002c846",
+		"name": "NABTEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get weather infor by City Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Define expected Response's schema",
+							"var schema =",
+							"    {",
+							"    \"type\": \"object\",",
+							"    \"required\": [\"coord\",\"weather\",\"base\",\"main\",\"visibility\", \"wind\",\"clouds\",\"dt\",\"sys\",\"timezone\",\"id\",\"name\",\"cod\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"coord\": {",
+							"            \"type\": \"object\",",
+							"            \"required\": [\"lon\",\"lat\"",
+							"            ],",
+							"            \"properties\": {",
+							"                \"lon\": {\"type\": \"number\"},",
+							"                \"lat\": {\"type\": \"number\"}",
+							"            }",
+							"        },",
+							"        \"weather\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": {",
+							"                \"anyOf\": [",
+							"                    {",
+							"                        \"type\": \"object\",",
+							"                        \"required\": [\"id\",\"main\",\"description\",\"icon\"",
+							"                        ],",
+							"                        \"properties\": {",
+							"                            \"id\": {\"type\": \"integer\"},",
+							"                            \"main\": {\"type\": \"string\"},",
+							"                            \"description\": {\"type\": \"string\"},",
+							"                            \"icon\": {\"type\": \"string\"}",
+							"                        }",
+							"                    }",
+							"                ]",
+							"            }",
+							"        },",
+							"        \"base\": {\"type\": \"string\"},",
+							"        \"main\": {",
+							"            \"type\": \"object\",",
+							"            \"required\": [\"temp\",\"feels_like\",\"temp_min\",\"temp_max\",\"pressure\",\"humidity\",\"sea_level\",\"grnd_level\"",
+							"            ],",
+							"            \"properties\": {",
+							"                \"temp\": {\"type\": \"number\"},",
+							"                \"feels_like\": {\"type\": \"number\"},",
+							"                \"temp_min\": {\"type\": \"number\"},",
+							"                \"temp_max\": {\"type\": \"number\"},",
+							"                \"pressure\": {\"type\": \"integer\"},",
+							"                \"humidity\": {\"type\": \"integer\"},",
+							"                \"sea_level\": {\"type\": \"integer\"},",
+							"                \"grnd_level\": {\"type\": \"integer\"}",
+							"            }",
+							"        },",
+							"        \"visibility\": {\"type\": \"integer\"},",
+							"        \"wind\": {\"type\": \"object\",",
+							"            \"required\": [\"speed\",\"deg\",\"gust\"],",
+							"            \"properties\": {",
+							"                \"speed\": {\"type\": \"number\"},",
+							"                \"deg\": {\"type\": \"integer\"},",
+							"                \"gust\": {\"type\": \"number\"}",
+							"            }",
+							"        },",
+							"        \"clouds\": {",
+							"            \"type\": \"object\",",
+							"            \"required\": [\"all\"",
+							"            ],",
+							"            \"properties\": {\"all\": {\"type\": \"integer\"}}",
+							"        },",
+							"        \"dt\": {\"type\": \"integer\"},",
+							"        \"sys\": {",
+							"            \"type\": \"object\",",
+							"            \"required\": [\"type\",\"id\",\"country\",\"sunrise\",\"sunset\"],",
+							"            \"properties\": {",
+							"                \"type\": {\"type\": \"integer\"},",
+							"                \"id\": {\"type\": \"integer\"},",
+							"                \"country\": {\"type\": \"string\"},",
+							"                \"sunrise\": {\"type\": \"integer\"},",
+							"                \"sunset\": {\"type\": \"integer\"}",
+							"            }",
+							"        },",
+							"        \"timezone\": {\"type\": \"integer\"},",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"name\": {\"type\": \"string\"},",
+							"        \"cod\": {\"type\": \"integer\"",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"//Get Response data",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"//-----------------------------Test Scripts-----------------------------------------------------------//",
+							"",
+							"pm.test('[100-13]: Schema is valid', function () {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"pm.test(\"[100-14]: Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"[100-15]: Verify Longtidude is correct\", function () {",
+							"    pm.expect(jsonData.coord.lon).to.eql(pm.environment.get(\"coord_lon\"));",
+							"});",
+							"",
+							"pm.test(\"[100-16]: Verify Latidude is correct\", function () {",
+							"    pm.expect(jsonData.coord.lat).to.eql(pm.environment.get(\"coord_lan\"));",
+							"});",
+							"",
+							"pm.test(\"[100-17]: Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Set ",
+							"const getGeocodingAPI= {",
+							"    url:'http://api.openweathermap.org/geo/1.0/direct?q=Ha Noi&appid=9ff6a971daef64ab5281cfa1e8d85acc',",
+							"    method:'GET'",
+							"}",
+							"",
+							"pm.sendRequest(getGeocodingAPI, function (err, response) {",
+							"    console.log(response.json());",
+							"    var jsonDataGeo =response.json();",
+							"    pm.environment.set(\"city_name\", jsonDataGeo[0].name);",
+							"    pm.environment.set(\"coord_lon\", jsonDataGeo[0].lon);",
+							"    pm.environment.set(\"coord_lan\", jsonDataGeo[0].lat);",
+							"    console.log(jsonDataGeo.name);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/data/2.5/weather?q={{city_name}}&appid={{api_key}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{city_name}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{api_key}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
